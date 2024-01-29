@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 250px;
+        }
+
+        #stopwatch {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+  <h1> STOP WATCH </h1>
+<div id="stopwatch">00:00:00</div>
+
+<div id="buttons">
+    <button onclick="startPause()">Start</button>
+    <button onclick="reset()">Reset</button>
+</div>
+
+<script>
+    let timer;
+    let isRunning = false;
+    let milliseconds = 0;
+
+    function updateStopwatch() {
+        const minutes = Math.floor(milliseconds / 60000);
+        const seconds = Math.floor((milliseconds % 60000) / 1000);
+        const ms = (milliseconds % 1000).toString().padStart(3, '0');
+
+        document.getElementById('stopwatch').textContent = `${minutes}:${seconds}:${ms}`;
+    }
+
+    function startPause() {
+        if (isRunning) {
+            clearInterval(timer);
+            document.querySelector('button').textContent = 'Start';
+        } else {
+            timer = setInterval(() => {
+                milliseconds += 10;
+                updateStopwatch();
+            }, 10);
+            document.querySelector('button').textContent = 'Pause';
+        }
+        isRunning = !isRunning;
+    }
+
+    function reset() {
+        clearInterval(timer);
+        milliseconds = 0;
+        updateStopwatch();
+        document.querySelector('button').textContent = 'Start';
+        isRunning = false;
+    }
+
+    // Initial update
+    updateStopwatch();
+</script>
+
+</body>
+</html>
